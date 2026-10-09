@@ -1,5 +1,5 @@
 # INLS509_Midterm_Exam_Practice
-A diagnostic and practice exam for INLS 509
+A diagnostic and practice exam for INLS 509: https://lylamnrose.github.io/INLS509_Midterm_Exam_Practice/
 
 I built INLS 509 Exam Lab, a practice-test page with written answers, no multiple choice. It has four tabs:
 
