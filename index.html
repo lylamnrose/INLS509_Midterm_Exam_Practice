@@ -1,0 +1,362 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>INLS 509 Exam Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column of question cards under a sticky tab bar; exams add a timer strip. */
+:root{
+  --bg:#f4f7fa; --surface:#ffffff; --ink:#13273a; --muted:#5a6b7c; --line:#d9e2ea;
+  --accent:#2f7fb8; --accent-soft:#e3f0fa; --accent-ink:#1d5a88;
+  --good:#1f7a4d; --good-soft:#e2f4ea; --warn:#9a6400; --warn-soft:#fbf0d9; --bad:#b03a2e; --bad-soft:#fbe5e2;
+  --display:"Sora",ui-sans-serif,system-ui,sans-serif; --body:"Work Sans",ui-sans-serif,system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1822; --surface:#15222f; --ink:#e4edf5; --muted:#9bb0c3; --line:#26394b;
+  --accent:#6db3e6; --accent-soft:#17324a; --accent-ink:#9fd0f2;
+  --good:#5fcb92; --good-soft:#153526; --warn:#e6b65a; --warn-soft:#3a2e14; --bad:#f08a7e; --bad-soft:#3d1d19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1822; --surface:#15222f; --ink:#e4edf5; --muted:#9bb0c3; --line:#26394b;
+  --accent:#6db3e6; --accent-soft:#17324a; --accent-ink:#9fd0f2;
+  --good:#5fcb92; --good-soft:#153526; --warn:#e6b65a; --warn-soft:#3a2e14; --bad:#f08a7e; --bad-soft:#3d1d19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding-inline:16px}
+header.top{padding-block:28px 12px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);line-height:1.15;margin:6px 0 8px;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:62ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px}
+.tab{font:600 14px var(--body);color:var(--muted);background:none;border:0;border-radius:8px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.tab:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:20px 80px}
+.intro{display:grid;gap:10px;margin-bottom:20px}
+.intro p{margin:0}
+.note{font-size:14px;color:var(--muted)}
+.strip{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.timer{font:600 20px var(--mono);font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+.progress{font:500 13px var(--mono);color:var(--muted)}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;display:grid;gap:10px}
+.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
+.qnum{font:700 15px var(--display)}
+.chip{font:500 11.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border-radius:999px;padding:2px 9px}
+.prompt{margin:0}
+.prompt code,.mono{font-family:var(--mono);font-size:.92em}
+.part{display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.part:first-of-type{border-top:0;padding-top:0}
+.plabel{font-weight:600}
+.pts{font:500 12px var(--mono);color:var(--muted)}
+textarea{width:100%;min-height:84px;resize:vertical;font:15px/1.5 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+.tblwrap{overflow-x:auto}
+table.data{border-collapse:collapse;font:13.5px var(--mono);font-variant-numeric:tabular-nums;min-width:100%}
+table.data th,table.data td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+table.data th{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 14px var(--body);border-radius:8px;padding:8px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0e1822}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#0e1822}}
+.btn:disabled{opacity:.55;cursor:default}
+.marks{display:flex;gap:4px;margin-left:auto}
+.mark{font:600 12.5px var(--body);border:1px solid var(--line);background:none;color:var(--muted);border-radius:999px;padding:5px 10px;cursor:pointer}
+.mark[aria-pressed="true"][data-v="got_it"]{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.mark[aria-pressed="true"][data-v="partial"]{background:var(--warn-soft);color:var(--warn);border-color:var(--warn)}
+.mark[aria-pressed="true"][data-v="missed"]{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.fb{border-radius:8px;padding:10px 12px;font-size:14.5px;background:var(--accent-soft)}
+.fb.got_it{background:var(--good-soft)} .fb.partial{background:var(--warn-soft)} .fb.missed{background:var(--bad-soft)}
+.fb strong{display:block;font-size:12px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
+.model{border-left:3px solid var(--accent);padding:6px 0 6px 12px;font-size:14.5px}
+.model .k{font:600 12px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink)}
+.score{font:700 34px var(--display);font-variant-numeric:tabular-nums}
+.summary{display:grid;gap:12px}
+.topicrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;grid-column:1/-1;display:flex}
+.bar span{display:block;height:100%}
+.sheetlist{display:grid;gap:8px;margin:0;padding-left:20px}
+.sheetlist li{padding-left:2px}
+.empty{color:var(--muted);font-style:italic}
+.status{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<header class="top wrap">
+  <div class="eyebrow">INLS 509 · Midterm Mon 10/12 · in class, 1 hr 15 min</div>
+  <h1>INLS 509 Exam Lab</h1>
+  <p class="lede">Written-answer practice in your professor's style. Start with the Diagnostic to find out what goes on your notes sheet, then take Exam A and Exam B under time.</p>
+</header>
+
+<nav class="tabs" aria-label="Sections"><div class="wrap" role="tablist">
+  <button class="tab" role="tab" id="tab-diag" data-view="diag" aria-selected="true">Diagnostic</button>
+  <button class="tab" role="tab" id="tab-sheet" data-view="sheet" aria-selected="false">Cheat-sheet list</button>
+  <button class="tab" role="tab" id="tab-examA" data-view="examA" aria-selected="false">Exam A</button>
+  <button class="tab" role="tab" id="tab-examB" data-view="examB" aria-selected="false">Exam B</button>
+</div></nav>
+
+<main class="wrap" id="main"></main>
+
+<script>
+// ---------- Content ----------
+const T = (rows) => '<div class="tblwrap"><table class="data">' + rows.map((r,i)=>'<tr>'+r.map(c=>i===0?'<th>'+c+'</th>':'<td>'+c+'</td>').join('')+'</tr>').join('') + '</table></div>';
+
+const DIAG = [
+ {id:"d1",topic:"Basics",q:"In this course, what do <b>query</b>, <b>corpus</b> and <b>relevance</b> mean?",model:"Query = the user's expression of their information need. Corpus = the repository of retrievable items (a collection of text documents). Relevance = satisfaction of the user's information need.",key:"All three defined; relevance tied to satisfying the information need.",sheet:"Query = expression of info need · Corpus = collection of docs · Relevance = satisfies the info need"},
+ {id:"d2",topic:"Basics",q:"Give one <b>query-document</b> piece of evidence and one <b>document-only</b> piece of evidence a search engine can use to predict relevance.",model:"Query-document: the query terms appear often / all appear / appear close together / appear in the title, URL or anchor text. Document-only (same for every query): many in-links, fresh, not spam, normal length, appropriate reading level.",key:"One valid example of each, correctly classified.",sheet:"Query-doc evidence: terms frequent, close together, in title/anchor · Doc-only: in-links, freshness, not spam"},
+ {id:"d3",topic:"Controlled vocab",q:"Compare a <b>controlled vocabulary</b> and <b>free-text indexing</b> on: cost of assigning index terms, ambiguity, and level of detail.",model:"Controlled vocabulary: high cost, unambiguous, can't represent arbitrary detail. Free-text: low cost, can be ambiguous, any level of detail.",key:"All three rows for both sides.",sheet:"CV: high cost · unambiguous · limited detail | Free-text: low cost · ambiguous · any detail"},
+ {id:"d4",topic:"Controlled vocab",q:"Name one thing a controlled vocabulary can do that free-text indexing can't.",model:"Tag a document with a concept even if the word never appears in the text; or let users browse a hierarchy of concepts without typing a query.",key:"Concept doesn't need to appear in text, or browsing via relationships.",sheet:"CV win: concept doesn't have to appear in the text; browse hierarchy without a query"},
+ {id:"d5",topic:"Indexing",q:"Inverted lists: jack = [3, 8, 12, 20, 31], jill = [8, 15, 20, 40]. What do <b>jack AND jill</b> and <b>jack OR jill</b> return?",model:"AND = {8, 20}. OR = {3, 8, 12, 15, 20, 31, 40}.",key:"Both result sets exactly right.",sheet:"AND = docids in both lists · OR = every docid once, still sorted"},
+ {id:"d6",topic:"Indexing",q:"Why are inverted lists sorted by docid? Explain how it helps for <b>AND</b> and for <b>OR</b>.",model:"So two lists can be merged in one pass with two pointers. AND: if the docids match, keep it; otherwise advance the pointer with the lower docid; stop when one list runs out. OR: add the lower docid each step (a match once) and advance it; the result stays sorted. Without sorting you'd compare every pair.",key:"One pass / compare lowest docids; AND explained (advance lower, stop early); OR explained (add lower each step).",sheet:"Sorted docids → one pass, two pointers. AND: match=keep, else advance lower, stop when a list ends. OR: add the lower each step until both end"},
+ {id:"d7",topic:"Indexing",q:"df: apple = 5,000, ipad = 40, case = 900. What's the most efficient order to process <b>apple AND ipad AND case</b>, and why does the index store df?",model:"(ipad AND case) AND apple: merge the shortest lists first so the intermediate result stays small. df tells the engine how long each list is so it can pick that order.",key:"Shortest lists first; df = list length used for ordering.",sheet:"Merge order: shortest df first. df = # docs with term = list length"},
+ {id:"d8",topic:"Indexing",q:"What does the index need (beyond docids and tf) to support: (a) a phrase query \"information science\", (b) information OW/2 science, (c) phototherapy[title], (d) light AND therap*?",model:"(a) and (b) word positions in each doc (a positional index). (c) a separate index per field, or term.field entries like phototherapy.title. (d) no index change: a prefix→terms dictionary, and the query expands to the full terms joined with OR.",key:"Positions for a and b; fields for c; prefix dictionary + OR for d.",sheet:"Phrase/proximity → positions · field → per-field index or term.field · wildcard → prefix dictionary, expand with OR"},
+ {id:"d9",topic:"Text processing",q:"What is the core motivation for <b>down-casing</b>? Give one case where it backfires.",model:"Case rarely changes meaning and users type in lowercase, so \"Information\" should match \"information\" (normalizing case). It backfires when case carries meaning: SMART vs smart, Bush vs bush, US vs us.",key:"Normalization / match regardless of case; one valid risk.",sheet:"Down-casing: same word regardless of case (users type lowercase). Risk: SMART/smart, US/us"},
+ {id:"d10",topic:"Text processing",q:"What is the core motivation for <b>stemming</b>? Does it help recall or precision, and give one false positive.",model:"Relevant documents use different forms of the same word (repair, repairs, repairing), so conflating them to one stem lets the query match them all. It improves recall; precision is not clear-cut. False positive: university/universe, policy/police, organization/organ.",key:"Matches word variants; recall; one valid false positive.",sheet:"Stemming: match word variants → ↑recall (precision not clear-cut). False +: university/universe"},
+ {id:"d11",topic:"Text processing",q:"What is the core motivation for <b>removing stopwords</b>? When does it backfire?",model:"Stopwords are frequent in every document, so they don't help separate relevant from non-relevant docs; removing them also shrinks the index and speeds up queries. It backfires on queries made of stopwords: \"to be or not to be\", \"the who\".",key:"Don't distinguish relevant docs (and/or index size, speed); valid failure example.",sheet:"Stopwords: in every doc → don't discriminate; smaller index. Risk: \"to be or not to be\""},
+ {id:"d12",topic:"Text processing",q:"Why would you index whether a word appears in the <b>TITLE</b> or the <b>BODY</b> of a document?",model:"So users can restrict a query to a part of the document, and so title matches can be weighted higher: a term in the title is usually central to what the document is about.",key:"Field-restricted queries and/or title = stronger evidence of aboutness.",sheet:"Title vs body: allows field-restricted queries; title term = central topic → weight higher"},
+ {id:"d13",topic:"Text processing",q:"After stemming, does the index have more or fewer distinct terms? What happens to the inverted lists?",model:"Fewer distinct terms (variants merge into one stem), but some inverted lists get longer because the merged variants' docids now share one list.",key:"Fewer terms; some lists longer.",sheet:"Stemming → fewer index terms, some lists longer"},
+ {id:"d14",topic:"Text statistics",q:"Zipf's law (f = k ÷ r). The most frequent term occurs 12,000 times. Estimate how often the rank-4 term occurs, and how often the top 4 terms occur in total.",model:"Rank 4: 12,000 ÷ 4 = 3,000. Top 4 total: 12,000 + 6,000 + 4,000 + 3,000 = 25,000.",key:"3,000 and 25,000.",sheet:"Zipf: count = top ÷ rank; \"any of the top n\" → add them"},
+ {id:"d15",topic:"Text statistics",q:"A collection's vocabulary has 2,000,000 distinct terms. Using Zipf, about how many terms appear <b>exactly twice</b>? (Fraction occurring n times = 1 ÷ (n × (n+1)).)",model:"1 ÷ (2 × 3) = 1/6, then 1/6 × 2,000,000 ≈ 333,333 terms.",key:"Uses 1/6 AND multiplies by vocabulary size: ≈333,333.",sheet:"Seen exactly n times = 1 ÷ (n(n+1)) → a FRACTION, × vocab size for a count"},
+ {id:"d16",topic:"Text statistics",q:"Heaps' law: you add the same 500 documents to a 1,000-doc collection and to a 1,000,000-doc collection. Which gains more new vocabulary terms, and why?",model:"The 1,000-doc collection. Vocabulary growth slows as a collection gets bigger: the large collection has already seen most of the words in those documents.",key:"Smaller collection; growth slows with size.",sheet:"Heaps: new terms slow down as the collection grows but never stop"},
+ {id:"d17",topic:"Text statistics",q:"1,000 documents: 50 contain both w1 and w2, 100 contain w1, 200 contain w2. Compute the mutual information (log base 10) and say what it means. MI = log[ P(both) ÷ (P(w1) × P(w2)) ].",model:"P(both) = 0.05, P(w1) = 0.10, P(w2) = 0.20. 0.05 ÷ 0.02 = 2.5, log(2.5) ≈ 0.40. Above 0, so the words co-occur more than chance: they're related.",key:"≈0.40 (or ln ≈ 0.92 if stated); positive = related.",sheet:"MI = log(BOTH ÷ (W1 × W2)), shares of docs. >0 related, 0 independent"},
+ {id:"d18",topic:"Boolean",q:"Ranked Boolean. Doc A: cat 3, dog 7, fish 0. Doc B: cat 2, dog 2, fish 5. Score both for <b>(cat AND dog) OR fish</b>. Which ranks first?",model:"A: min(3, 7) = 3, then 3 + 0 = 3. B: min(2, 2) = 2, then 2 + 5 = 7. B ranks first.",key:"A = 3, B = 7, B first.",sheet:"Ranked Boolean: AND = smallest count, OR = add; parentheses first. One term = just its tf"},
+ {id:"d19",topic:"Precision & recall",q:"Relevant = {2, 4, 6, 8, 10}. Retrieved = {2, 4, 7}. Compute precision and recall.",model:"Overlap = {2, 4}. Precision = 2 ÷ 3 ≈ 67%. Recall = 2 ÷ 5 = 40%.",key:"P ≈ 67%, R = 40%.",sheet:"P = got-good ÷ got · R = got-good ÷ all-good"},
+ {id:"d20",topic:"Precision & recall",q:"A patent examiner checks whether an invention already exists. Someone else wants one good pizza place nearby. Which cares more about precision and which about recall? Why?",model:"Patent examiner → recall: missing one existing patent is costly, so they'll sift through junk. Pizza → precision: they only need a few good results at the top and will give up if the top is junk.",key:"Correct metric for each with cost-of-miss vs cost-of-junk reasoning.",sheet:"Recall = cost of missing is high (patent, legal, PhD novelty). Precision = only need a few good ones at top"},
+ {id:"d21",topic:"Vector space",q:"Binary representation. Query: <b>red apple pie</b>. D1: \"apple pie with apple sauce\". D2: \"red apple\". Give each doc's inner product and cosine. Which ranks first under cosine?",model:"Inner product: D1 = 2 (apple, pie), D2 = 2 (red, apple). Cosine: D1 = 2 ÷ (√3 × √4) ≈ 0.58; D2 = 2 ÷ (√3 × √2) ≈ 0.82. D2 ranks first (fewer distinct words).",key:"IP 2 and 2; cosine ≈0.58 and ≈0.82; D2 first. Distinct words: D1 = 4, D2 = 2.",sheet:"Cosine = IP ÷ (√Q × √D), Q/D = # distinct words. Same IP → fewer distinct words wins"},
+ {id:"d22",topic:"Vector space",q:"Same query and documents as the last question, but with a <b>term-frequency</b> representation. What is each doc's inner product?",model:"D1: apple 1×2 + pie 1×1 = 3. D2: red 1×1 + apple 1×1 = 2.",key:"D1 = 3, D2 = 2 (apple counted twice in D1).",sheet:"TF inner product: multiply query count × doc count for each word, add (repeats count)"},
+ {id:"d23",topic:"Vector space",q:"N = 1,000 docs. \"the\" appears in all 1,000; \"lemur\" appears in 10. Give each IDF (log base 10). If \"lemur\" appears 4 times in a doc, what is its TF-IDF? Why multiply TF by IDF instead of adding?",model:"IDF(the) = log(1000/1000) = 0. IDF(lemur) = log(1000/10) = 2. TF-IDF = 4 × 2 = 8. Multiplying means a word in every document (IDF = 0) gets weight 0 no matter how often it appears.",key:"0, 2, 8; IDF 0 wipes out the weight.",sheet:"IDF = log(N ÷ df), word in every doc → 0. TF-IDF = TF × IDF (multiply so IDF 0 kills it)"},
+ {id:"d24",topic:"Query likelihood",q:"Query likelihood, no smoothing. Query: <b>red apple</b>. D1 has 20 words: red 2, apple 4. D2 has 10 words: red 1, apple 0. Score both.",model:"D1 = (2/20) × (4/20) = 0.1 × 0.2 = 0.02. D2 = (1/10) × (0/10) = 0, because apple is missing.",key:"0.02 and 0.",sheet:"QL = share × share × … (share = count ÷ doc length). Any missing word → 0"},
+ {id:"d25",topic:"Query likelihood",q:"Linear interpolation with λ = 0.5. For D2 above (red 1, apple 0, 10 words), P(red | collection) = 0.02 and P(apple | collection) = 0.01. What is D2's smoothed score? Name two benefits of smoothing.",model:"red: 0.5 × 0.1 + 0.5 × 0.02 = 0.06. apple: 0.5 × 0 + 0.5 × 0.01 = 0.005. Score = 0.06 × 0.005 = 0.0003. Benefits: no zero scores for a missing term; IDF-like weighting (rarer collection words count more).",key:"0.0003 (or the two blends shown); both benefits.",sheet:"Smoothed: blend = λ(doc share) + (1−λ)(collection share), multiply blends. Benefits: no zeros + IDF-like"},
+ {id:"d26",topic:"Model comparison",q:"Query: otter. Dx and Dy both contain \"otter\" 3 times. Dx: 30 total words, 20 distinct. Dy: 60 total words, 15 distinct. Which wins under (a) ranked Boolean, (b) binary cosine, (c) QL with no smoothing?",model:"(a) Tie: both score tf = 3. (b) Dy: fewer distinct words (√15 < √20). (c) Dx: 3/30 = 0.1 beats 3/60 = 0.05 (fewer total words).",key:"Tie, Dy, Dx, with the length reason for b and c.",sheet:"Same tf: Boolean & IP tie · cosine → fewer DISTINCT words wins · QL → fewer TOTAL words wins"},
+ {id:"d27",topic:"Model comparison",q:"(a) Why does unsmoothed query likelihood behave like Boolean AND? (b) Which kind of document does the plain inner product favor, and why?",model:"(a) Scores are multiplied, so one missing query term makes the score 0, like AND requiring every term. (b) Long documents: they're more likely to contain the query terms, and the inner product ignores length.",key:"Missing term → 0; long docs favored.",sheet:"Unsmoothed QL ≈ AND (missing → 0). Inner product favors long docs; cosine normalizes"}
+];
+
+const EXAMS = {
+ examA:{title:"Practice Exam A", questions:[
+  {id:"a1",title:"Indexes and retrieval",pts:10,q:"Inverted lists: dog = [2, 9, 14, 30] and cat = [9, 10, 30, 41, 52].",parts:[
+   {id:"a1a",pts:6,q:"Walk through processing <b>dog AND cat</b> step by step. What is the result, and why can you stop before reaching the end of the cat list?",model:"2 vs 9 → advance dog. 9 = 9 → keep 9, advance both. 14 vs 10 → advance cat. 14 vs 30 → advance dog. 30 = 30 → keep 30, advance both. Dog list is done → stop. Result {9, 30}. You can stop because nothing left in cat can match an empty dog list.",key:"Result {9, 30}; advance the lower docid; stop when one list ends."},
+   {id:"a1b",pts:4,q:"Why is OR usually more expensive than AND?",model:"OR has to walk both lists all the way to the end and produces a bigger result; AND can stop as soon as one list runs out.",key:"Walk both lists fully / larger output vs. AND's early stop."}]},
+  {id:"a2",title:"Text processing in free-text indexing",pts:20,q:"For each decision, give the core motivation and one situation where it hurts.",parts:[
+   {id:"a2a",pts:5,q:"(a) Down-casing",model:"Treat words the same regardless of case; users type lowercase. Hurts: US vs us, SMART vs smart.",key:"Normalization + valid risk."},
+   {id:"a2b",pts:5,q:"(b) Stemming",model:"Match different forms of the same word (repair/repairing) → better recall. Hurts precision with false positives like university/universe.",key:"Word variants/recall + valid risk."},
+   {id:"a2c",pts:5,q:"(c) Removing stopwords",model:"They appear in every document so they don't distinguish relevant docs; smaller index, faster queries. Hurts: \"to be or not to be\", \"the who\".",key:"Don't discriminate (or size/speed) + valid risk."},
+   {id:"a2d",pts:5,q:"(d) Distinguishing TITLE from BODY",model:"Lets users restrict queries to the title and lets the engine weight title matches higher, since the title states the main topic. Hurts: bigger index (about double the terms).",key:"Field restriction/weighting + cost."}]},
+  {id:"a3",title:"Precision vs. recall",pts:10,q:"A Boolean query retrieves 20 documents; 18 of them are relevant. The collection contains 200 relevant documents in total.",parts:[
+   {id:"a3a",pts:4,q:"(a) Compute precision and recall.",model:"Precision = 18 ÷ 20 = 90%. Recall = 18 ÷ 200 = 9%.",key:"90% and 9%."},
+   {id:"a3b",pts:3,q:"(b) A lawyer doing legal discovery: satisfied? Justify with precision/recall.",model:"No. Discovery needs recall: missing relevant documents is costly, and 9% recall leaves 182 relevant documents unfound.",key:"No; recall."},
+   {id:"a3c",pts:3,q:"(c) Someone looking for one quick recipe: satisfied?",model:"Yes. They only need a few good results; 90% precision means nearly everything they see is useful.",key:"Yes; precision."}]},
+  {id:"a4",title:"Statistical properties of text",pts:10,q:"Use Zipf's law (f = k ÷ r; fraction of terms occurring exactly n times = 1 ÷ (n(n+1))).",parts:[
+   {id:"a4a",pts:5,q:"(a) A library catalog's vocabulary has 400,000 distinct terms. About how many appear exactly once?",model:"1 ÷ (1 × 2) = 1/2 → 1/2 × 400,000 = 200,000.",key:"200,000."},
+   {id:"a4b",pts:5,q:"(b) The catalog's most frequent query was issued 8,000 times. Estimate how many times users issued any of the 4 most frequent queries.",model:"8,000 + 4,000 + 2,667 + 2,000 ≈ 16,667.",key:"Adds all four: ≈16,667."}]},
+  {id:"a5",title:"Retrieval models",pts:30,q:"Query: <b>blue whale song</b>."+T([["","blue","whale","song","Total terms","Distinct terms"],["D1",2,3,1,20,12],["D2",0,5,5,25,10],["D3",1,1,1,10,9],["D4",4,0,0,8,5]]),parts:[
+   {id:"a5a",pts:7,q:"(a) Binary representation, inner product: score each document.",model:"D1 = 3, D2 = 2, D3 = 3, D4 = 1.",key:"3, 2, 3, 1."},
+   {id:"a5b",pts:7,q:"(b) Term-frequency representation, inner product: score each document.",model:"D1 = 2 + 3 + 1 = 6, D2 = 0 + 5 + 5 = 10, D3 = 3, D4 = 4.",key:"6, 10, 3, 4."},
+   {id:"a5c",pts:8,q:"(c) Binary representation, cosine similarity: score each document.",model:"|q| = √3. D1 = 3 ÷ (√3 × √12) = 0.50. D2 = 2 ÷ (√3 × √10) ≈ 0.37. D3 = 3 ÷ (√3 × √9) ≈ 0.58. D4 = 1 ÷ (√3 × √5) ≈ 0.26.",key:"0.50, ≈0.37, ≈0.58, ≈0.26 (uses distinct terms)."},
+   {id:"a5d",pts:8,q:"(d) Query likelihood, no smoothing: score each document.",model:"D1 = (2/20)(3/20)(1/20) = 0.1 × 0.15 × 0.05 = 0.00075. D2 = 0 (no blue). D3 = (1/10)³ = 0.001. D4 = 0 (no whale or song).",key:"0.00075, 0, 0.001, 0 (uses total terms)."}]},
+  {id:"a6",title:"Retrieval models",pts:20,q:"Query: <b>otter</b>. Documents D7 and D8 both contain \"otter\" 4 times. For each model: must both get the same score? If not, what decides which scores higher?",parts:[
+   {id:"a6a",pts:5,q:"(a) Ranked Boolean",model:"Yes, same score: with one term the score is just tf = 4.",key:"Yes."},
+   {id:"a6b",pts:5,q:"(b) Inner product with a term-frequency representation",model:"Yes, same score: 1 × 4 = 4 for both; length is ignored.",key:"Yes."},
+   {id:"a6c",pts:5,q:"(c) Cosine similarity with a binary representation",model:"No. The document with fewer distinct words scores higher.",key:"No; fewer distinct words."},
+   {id:"a6d",pts:5,q:"(d) Query likelihood with linear interpolation",model:"No. The document with fewer total words scores higher; the collection part is the same for both, so document length decides.",key:"No; fewer total words."}]}
+ ]},
+ examB:{title:"Practice Exam B", questions:[
+  {id:"b1",title:"Indexes and query operators",pts:10,q:"For each query, say what the index must store beyond docids (or how the engine handles it).",parts:[
+   {id:"b1a",pts:3,q:"(a) The phrase \"tar heels\" and the query tar UW/3 heels",model:"Word positions for each occurrence (a positional index), so the engine can check that heels comes right after tar, or within 3 words either side.",key:"Positions."},
+   {id:"b1b",pts:3,q:"(b) tar[title]",model:"Field information: a separate index per field, or index entries like tar.title.",key:"Per-field index or term.field."},
+   {id:"b1c",pts:2,q:"(c) tar*",model:"No index change: a dictionary maps the prefix to full terms, and the query becomes (tar OR tarheel OR tarp …).",key:"Prefix dictionary + OR."},
+   {id:"b1d",pts:2,q:"(d) Why store df in the index?",model:"df is each list's length, so the engine can merge the shortest lists first (and later compute IDF).",key:"Merge order (and/or IDF)."}]},
+  {id:"b2",title:"Text processing",pts:20,q:"Short answers.",parts:[
+   {id:"b2a",pts:5,q:"(a) Why would a patent search engine want stemming more than a search engine for exact product model numbers?",model:"Patent searchers need recall: stemming catches every form of a word so nothing is missed. Model-number searchers need precision and exact matches, where stemming could merge things that differ.",key:"Stemming ↑recall; patent = recall-focused."},
+   {id:"b2b",pts:5,q:"(b) Why does stopword removal break the query \"to be or not to be\", and what do modern systems do instead?",model:"Every word is a stopword, so nothing is left to search. Modern systems keep stopwords in the index and drop them from queries only when they seem unimportant.",key:"All words removed; index them, drop at query time."},
+   {id:"b2c",pts:5,q:"(c) Down-casing turns \"US\" into \"us\". Why do search engines down-case anyway?",model:"Most of the time case doesn't change meaning and users type in lowercase, so matching regardless of case finds far more relevant documents than it loses.",key:"Users type lowercase; benefit outweighs rare meaning changes."},
+   {id:"b2d",pts:5,q:"(d) What does stemming do to the number of index terms and to inverted list lengths?",model:"Fewer index terms, because variants merge into one stem; some inverted lists get longer.",key:"Fewer terms, longer lists."}]},
+  {id:"b3",title:"Precision vs. recall",pts:10,q:"There are 40 relevant documents. System X retrieves 5 documents, all relevant. System Y retrieves 50 documents, 25 relevant.",parts:[
+   {id:"b3a",pts:4,q:"(a) Precision and recall for X and for Y.",model:"X: P = 5/5 = 100%, R = 5/40 = 12.5%. Y: P = 25/50 = 50%, R = 25/40 = 62.5%.",key:"X 100% / 12.5%; Y 50% / 62.5%."},
+   {id:"b3b",pts:3,q:"(b) A doctor researching a rare condition: which system, and why?",model:"Y: the doctor needs recall, since missing a relevant case study is costly and they'll read through junk.",key:"Y; recall."},
+   {id:"b3c",pts:3,q:"(c) Someone quickly checking one fact: which system?",model:"X: they need precision; every result is relevant and they only need one.",key:"X; precision."}]},
+  {id:"b4",title:"Statistical properties of text",pts:10,q:"",parts:[
+   {id:"b4a",pts:5,q:"(a) Using P = c ÷ r with c = 0.1, what share of all term occurrences do the 4 most frequent terms account for together?",model:"0.1 × (1 + 1/2 + 1/3 + 1/4) = 0.1 × 2.083 ≈ 20.8%.",key:"≈20.8%."},
+   {id:"b4b",pts:5,q:"(b) Heaps' law (v = k × n^β, β ≈ 0.5). If a corpus doubles in size, what happens to its vocabulary?",model:"It grows, but by less than double: about √2 ≈ 1.41 times bigger, because growth slows as the corpus grows (and it never stops).",key:"Grows by less than double (≈1.41×)."}]},
+  {id:"b5",title:"Retrieval models",pts:30,q:"Query: <b>jazz piano</b>. N = 100 documents; jazz appears in 10 of them and piano in 50 (log base 10, so IDF(jazz) = 1 and IDF(piano) ≈ 0.30)."+T([["","jazz","piano","Total terms"],["D1",2,1,30],["D2",0,6,20],["D3",1,1,10]]),parts:[
+   {id:"b5a",pts:8,q:"(a) Give each document's TF-IDF weights for jazz and piano.",model:"D1: jazz 2 × 1 = 2, piano 1 × 0.30 = 0.30. D2: jazz 0, piano 6 × 0.30 = 1.81. D3: jazz 1, piano 0.30.",key:"D1 [2, 0.30], D2 [0, 1.81], D3 [1, 0.30]."},
+   {id:"b5b",pts:8,q:"(b) The query's weights are its IDFs [1, 0.30]. Compute each document's inner product with TF-IDF weights and rank them.",model:"D1 = 1 × 2 + 0.30 × 0.30 ≈ 2.09. D2 = 0 + 0.30 × 1.81 ≈ 0.54. D3 = 1 × 1 + 0.30 × 0.30 ≈ 1.09. Rank D1 > D3 > D2.",key:"≈2.09, ≈0.54, ≈1.09; D1 > D3 > D2."},
+   {id:"b5c",pts:6,q:"(c) With a plain term-frequency inner product, D2 ranks first (score 6). Why does TF-IDF change that?",model:"Piano is in half the documents, so its IDF is low and its 6 occurrences count for little. Jazz is rare (IDF 1), so documents with jazz move up.",key:"Piano common → low IDF; rare jazz weighted more."},
+   {id:"b5d",pts:8,q:"(d) Query likelihood, no smoothing: score each document.",model:"D1 = (2/30)(1/30) ≈ 0.0022. D2 = 0 (no jazz). D3 = (1/10)(1/10) = 0.01. Rank D3 > D1 > D2.",key:"≈0.0022, 0, 0.01."}]},
+  {id:"b6",title:"Comparing models",pts:20,q:"",parts:[
+   {id:"b6a",pts:5,q:"(a) Why does the inner product favor long documents, and how does cosine fix it?",model:"Longer documents are more likely to contain the query terms, and the inner product ignores length. Cosine divides by the vector lengths, so documents are compared fairly regardless of size.",key:"Long docs contain more terms; cosine divides by length."},
+   {id:"b6b",pts:5,q:"(b) Name the problems with unsmoothed query likelihood. Which does smoothing fix?",model:"A missing query term gives a score of 0, and there is no IDF (all terms count equally). (Longer queries giving lower scores is not a real problem.) Smoothing fixes both: no zeros, and IDF-like weighting.",key:"Zeros + no IDF; smoothing fixes both."},
+   {id:"b6c",pts:5,q:"(c) D9 and D10 each contain \"kiwi\" once and both have 5 distinct words, but D9 has 5 total words and D10 has 50. Query: kiwi. Compare them under binary cosine and under unsmoothed QL.",model:"Binary cosine: tie, since both have 5 distinct words. QL: D9 wins, 1/5 = 0.2 vs 1/50 = 0.02, because it has fewer total words.",key:"Cosine tie; QL D9."},
+   {id:"b6d",pts:5,q:"(d) What assumption about terms do the vector space model and the unigram language model share?",model:"Terms are independent: one word appearing says nothing about another appearing (even though real words co-occur, e.g. san/francisco).",key:"Term independence."}]}
+ ]}
+};
+
+// ---------- State ----------
+const state = { diag:{answers:{},results:{}}, examA:{answers:{},grades:null,elapsed:0}, examB:{answers:{},grades:null,elapsed:0} };
+let view = "diag", db = null, sample = null, saveChain = Promise.resolve();
+const LS = "inls509-examlab";
+try { const s = JSON.parse(localStorage.getItem(LS)||"null"); if (s) for (const k of Object.keys(state)) if (s[k]) state[k] = Object.assign(state[k], s[k]); } catch(e){}
+
+function persist(key){
+  try { localStorage.setItem(LS, JSON.stringify(state)); } catch(e){}
+  state[key].updatedAt = new Date().toISOString();
+  try { localStorage.setItem(LS, JSON.stringify(state)); } catch(e){}
+  if (!db) return;
+  const body = JSON.parse(JSON.stringify(state[key]));
+  saveChain = saveChain.then(()=>db.doc("attempts/"+key).set(body)).catch(()=>{});
+}
+
+// ---------- Claude grading ----------
+const STYLE = "The student understands math best as plain-word fill-in recipes with real numbers (e.g. 'cosine = IP ÷ (√Q × √D) = 2 ÷ (√3 × √4) = 0.58'); never use Σ or ∏ notation. Her professor accepts short, correct answers: never penalize brevity, wording or minor rounding, only missing or wrong ideas. Address her as 'you'.";
+function diagPrompt(item, ans){
+  return "Grade a student's answer to a practice question for INLS 509 (Information Retrieval) midterm.\n"+STYLE+
+  "\n\nQuestion: "+strip(item.q)+"\nModel answer: "+item.model+"\nWhat a full-credit answer needs: "+item.key+"\nStudent answer: "+ans+
+  '\n\nReply with only JSON: {"verdict":"got_it"|"partial"|"missed","feedback":"at most 2 short sentences: what was right or what is missing/wrong, with the corrected recipe if a calculation is off"}';
+}
+function examPrompt(exam, parts){
+  return "Grade a student's practice exam for INLS 509 (Information Retrieval). "+STYLE+
+  "\nAward points per part (integers or halves, 0 to max). Give partial credit for correct reasoning with a small arithmetic slip.\n\nParts:\n"+
+  parts.map(p=>"### "+p.id+" (max "+p.pts+" pts)\nQuestion: "+p.full+"\nModel answer: "+p.model+"\nFull credit needs: "+p.key+"\nStudent answer: "+(p.ans||"(blank)")).join("\n\n")+
+  '\n\nReply with only a JSON array, one object per part in the same order: [{"id":"a1a","score":5,"feedback":"one or two short sentences"}]';
+}
+function strip(h){ const d=document.createElement("div"); d.innerHTML=h; d.querySelectorAll("table").forEach(t=>{t.replaceWith(" ["+[...t.rows].map(r=>[...r.cells].map(c=>c.textContent).join(" | ")).join(" ; ")+"] ");}); return d.textContent.replace(/\s+/g," ").trim(); }
+function errCopy(e){ const c=e&&e.code; if(c==="not_granted"||c==="sampling_disabled") return "Claude grading isn't available here. Use the model answer and mark yourself."; if(c==="rate_limited") return "Too many grading requests at once. Wait a minute, then try again."; return "Grading didn't finish. Try again, or use the model answer and mark yourself."; }
+
+// ---------- Rendering helpers ----------
+const el = (tag, attrs={}, html="") => { const n=document.createElement(tag); for (const [k,v] of Object.entries(attrs)) { if (k==="class") n.className=v; else if (k.startsWith("on")) n.addEventListener(k.slice(2),v); else n.setAttribute(k,v); } if (html) n.innerHTML=html; return n; };
+const VLABEL = {got_it:"Got it",partial:"Shaky",missed:"Missed"};
+
+function renderDiag(main){
+  const done = DIAG.filter(d=>state.diag.results[d.id]?.verdict).length;
+  main.append(el("div",{class:"intro"},
+   "<p><b>How this works:</b> answer each question in a sentence or two, the way you would on Monday. Press <b>Check</b> to have Claude grade it, or <b>Show answer</b> to compare yourself. Then mark it Got it, Shaky, or Missed. Every Shaky or Missed question adds a line to your <b>Cheat-sheet list</b>.</p>"+
+   "<p class='note'>"+DIAG.length+" questions · about 45 minutes · <span id='dprog'>"+done+" of "+DIAG.length+" marked</span></p>"));
+  DIAG.forEach((item,i)=>main.append(diagCard(item,i)));
+}
+function diagCard(item,i){
+  const r = state.diag.results[item.id] || {};
+  const card = el("section",{class:"q",id:"q-"+item.id,"aria-labelledby":"h-"+item.id});
+  card.append(el("div",{class:"qhead"},"<span class='qnum' id='h-"+item.id+"'>Question "+(i+1)+"</span><span class='chip'>"+item.topic+"</span>"));
+  card.append(el("p",{class:"prompt"},item.q));
+  const ta = el("textarea",{id:"ans-"+item.id,"aria-label":"Your answer to question "+(i+1),placeholder:"Your answer"});
+  ta.value = state.diag.answers[item.id]||"";
+  ta.addEventListener("change",()=>{state.diag.answers[item.id]=ta.value; persist("diag");});
+  card.append(ta);
+  const fbBox = el("div"); const modelBox = el("div");
+  const row = el("div",{class:"row"});
+  const check = el("button",{class:"btn primary",type:"button"},"Check");
+  const show = el("button",{class:"btn",type:"button"},"Show answer");
+  const marks = el("div",{class:"marks",role:"group","aria-label":"Mark this question"});
+  ["got_it","partial","missed"].forEach(v=>{ const b=el("button",{class:"mark",type:"button","data-v":v,"aria-pressed":String(r.verdict===v)},VLABEL[v]); b.addEventListener("click",()=>{ setVerdict(item,v); }); marks.append(b); });
+  row.append(check,show,marks); card.append(row,fbBox,modelBox);
+  const paintFb = ()=>{ const rr=state.diag.results[item.id]||{}; fbBox.innerHTML = rr.feedback ? "<div class='fb "+(rr.verdict||"")+"'><strong>Claude · "+(VLABEL[rr.verdict]||"Feedback")+"</strong>"+esc(rr.feedback)+"</div>" : ""; marks.querySelectorAll(".mark").forEach(b=>b.setAttribute("aria-pressed",String(rr.verdict===b.dataset.v))); };
+  const paintModel = ()=>{ modelBox.innerHTML = "<div class='model'><div class='k'>Model answer</div>"+item.model+"</div>"; show.textContent="Answer shown"; show.disabled=true; };
+  if (r.feedback) paintFb(); if (r.shown) paintModel();
+  show.addEventListener("click",()=>{ paintModel(); state.diag.results[item.id]=Object.assign(state.diag.results[item.id]||{},{shown:true}); persist("diag"); });
+  check.addEventListener("click",async()=>{
+    const ans = ta.value.trim(); state.diag.answers[item.id]=ta.value;
+    if (!ans){ fbBox.innerHTML="<div class='fb'>Write an answer first, even a rough one.</div>"; return; }
+    if (!sample){ fbBox.innerHTML="<div class='fb'>Claude grading isn't available here. Use Show answer and mark yourself.</div>"; return; }
+    check.disabled=true; check.textContent="Checking…";
+    try{
+      const res = await sample.json(diagPrompt(item,ans),{modelTier:"quick"});
+      const v = ["got_it","partial","missed"].includes(res?.verdict)?res.verdict:"partial";
+      state.diag.results[item.id]=Object.assign(state.diag.results[item.id]||{},{verdict:v,feedback:String(res?.feedback||""),by:"claude"});
+      persist("diag"); paintFb(); paintModel(); updateProg();
+    }catch(e){ fbBox.innerHTML="<div class='fb'>"+errCopy(e)+"</div>"; }
+    finally{ check.disabled=false; check.textContent="Check again"; }
+  });
+  card._paint = paintFb;
+  return card;
+}
+function setVerdict(item,v){ state.diag.results[item.id]=Object.assign(state.diag.results[item.id]||{},{verdict:v,by:"you"}); persist("diag"); document.getElementById("q-"+item.id)?._paint(); updateProg(); }
+function updateProg(){ const n=DIAG.filter(d=>state.diag.results[d.id]?.verdict).length; const p=document.getElementById("dprog"); if(p) p.textContent=n+" of "+DIAG.length+" marked"; }
+function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+function renderSheet(main){
+  const marked = DIAG.filter(d=>state.diag.results[d.id]?.verdict);
+  const topics = [...new Set(DIAG.map(d=>d.topic))];
+  const intro = el("div",{class:"intro"},"<p>Everything you marked <b>Shaky</b> or <b>Missed</b> in the Diagnostic becomes a line for your notes sheet. Topics with the most red are where your sheet space should go.</p>");
+  main.append(intro);
+  const sum = el("section",{class:"q summary"}); sum.append(el("div",{class:"qhead"},"<span class='qnum'>By topic</span><span class='progress'>"+marked.length+" of "+DIAG.length+" marked</span>"));
+  topics.forEach(t=>{ const qs=DIAG.filter(d=>d.topic===t); const c={got_it:0,partial:0,missed:0}; qs.forEach(d=>{const v=state.diag.results[d.id]?.verdict; if(v) c[v]++;});
+    const row=el("div",{class:"topicrow"}); row.append(el("span",{},t), el("span",{class:"progress"},c.got_it+" ✓ · "+c.partial+" shaky · "+c.missed+" missed"));
+    const bar=el("div",{class:"bar","aria-hidden":"true"}); [["got_it","var(--good)"],["partial","var(--warn)"],["missed","var(--bad)"]].forEach(([k,col])=>{ if(c[k]) bar.append(el("span",{style:"width:"+(100*c[k]/qs.length)+"%;background:"+col})); }); row.append(bar); sum.append(row); });
+  main.append(sum);
+  const list = DIAG.filter(d=>["partial","missed"].includes(state.diag.results[d.id]?.verdict));
+  const box = el("section",{class:"q"}); box.append(el("div",{class:"qhead"},"<span class='qnum'>Lines for your notes sheet</span>"));
+  if (!list.length){ box.append(el("p",{class:"empty"}, marked.length? "Nothing marked Shaky or Missed yet. Nice.":"Mark questions in the Diagnostic and your list builds here.")); }
+  else { const ol=el("ol",{class:"sheetlist"}); list.forEach(d=>ol.append(el("li",{},"<b>"+d.topic+":</b> "+esc(d.sheet)+" <span class='pts'>("+VLABEL[state.diag.results[d.id].verdict]+")</span>"))); box.append(ol);
+    const copy=el("button",{class:"btn",type:"button"},"Copy list"); const st=el("span",{class:"status"});
+    copy.addEventListener("click",()=>{ const txt=list.map(d=>"• "+d.topic+": "+d.sheet).join("\n"); navigator.clipboard.writeText(txt).then(()=>{st.textContent="Copied.";},()=>{st.textContent="Copy didn't work here; select the list above instead.";}); });
+    const r2=el("div",{class:"row"}); r2.append(copy,st); box.append(r2); }
+  main.append(box);
+}
+
+let timerId=null;
+function renderExam(main,key){
+  const ex=EXAMS[key], s=state[key];
+  main.append(el("div",{class:"intro"},"<p><b>"+ex.title+"</b> · 6 questions · 100 points · same layout as last year's midterm, sized for 1 hr 15 min. Answer everything, then press <b>Submit for grading</b> at the bottom. Short answers are fine: he said blank space doesn't mean write more.</p>"));
+  const strip=el("div",{class:"strip"}); const tm=el("span",{class:"timer",id:"timer"}); const tb=el("button",{class:"btn",type:"button"}); const reset=el("button",{class:"btn",type:"button"},"Reset timer");
+  strip.append(el("span",{class:"progress"},"Time used"),tm,tb,reset); main.append(strip);
+  const paintT=()=>{ const t=s.elapsed||0; tm.textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0")+" / 75:00"; };
+  const running=()=>timerId!==null;
+  const setBtn=()=>{ tb.textContent=running()?"Pause":"Start timer"; };
+  tb.addEventListener("click",()=>{ if(running()){clearInterval(timerId);timerId=null;persist(key);} else { timerId=setInterval(()=>{s.elapsed=(s.elapsed||0)+1;paintT(); if(s.elapsed%30===0) try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){} },1000);} setBtn(); });
+  reset.addEventListener("click",()=>{ clearInterval(timerId); timerId=null; s.elapsed=0; paintT(); setBtn(); persist(key); });
+  paintT(); setBtn();
+  if (s.grades) main.append(scoreCard(key));
+  ex.questions.forEach((qq,i)=>{
+    const card=el("section",{class:"q"}); card.append(el("div",{class:"qhead"},"<span class='qnum'>"+(i+1)+". "+qq.title+"</span><span class='pts'>"+qq.pts+" points</span>"));
+    if(qq.q) card.append(el("div",{class:"prompt"},qq.q));
+    qq.parts.forEach(p=>{ const part=el("div",{class:"part"}); part.append(el("div",{},"<span class='plabel'>"+p.q+"</span> <span class='pts'>["+p.pts+" pts]</span>"));
+      const ta=el("textarea",{id:"ans-"+p.id,"aria-label":"Answer for "+strip2(p.q)}); ta.value=s.answers[p.id]||""; ta.addEventListener("change",()=>{s.answers[p.id]=ta.value;persist(key);}); part.append(ta);
+      const g=s.grades?.[p.id]; if(g){ const cls=g.score>=p.pts?"got_it":(g.score>0?"partial":"missed"); part.append(el("div",{class:"fb "+cls},"<strong>"+g.score+" / "+p.pts+"</strong>"+esc(g.feedback||"")), el("div",{class:"model"},"<div class='k'>Model answer</div>"+p.model)); }
+      card.append(part); });
+    main.append(card); });
+  const sub=el("section",{class:"q"}); const btn=el("button",{class:"btn primary",type:"button"},s.grades?"Grade again":"Submit for grading"); const st=el("span",{class:"status",role:"status"}); const self=el("button",{class:"btn",type:"button"},"Show model answers only");
+  sub.append(el("div",{class:"row"})); sub.firstChild.append(btn,self,st); main.append(sub);
+  self.addEventListener("click",()=>{ document.querySelectorAll("#main .part").forEach((part,idx)=>{ if(part.querySelector(".model")) return; const p=ex.questions.flatMap(q=>q.parts)[idx]; part.append(el("div",{class:"model"},"<div class='k'>Model answer</div>"+p.model)); }); st.textContent="Model answers shown under each part."; });
+  btn.addEventListener("click",async()=>{
+    document.querySelectorAll("#main textarea").forEach(t=>{ s.answers[t.id.slice(4)]=t.value; });
+    if(!sample){ st.textContent="Claude grading isn't available here. Use Show model answers only and score yourself."; return; }
+    const parts=ex.questions.flatMap(q=>q.parts.map(p=>({id:p.id,pts:p.pts,full:strip((q.q?q.q+" ":"")+p.q),model:p.model,key:p.key,ans:(s.answers[p.id]||"").trim()})));
+    btn.disabled=true; st.textContent="Grading… this takes about a minute.";
+    if(timerId){clearInterval(timerId);timerId=null;}
+    try{
+      const res=await sample.json(examPrompt(ex,parts),{modelTier:"default",cache:false});
+      const grades={}; (Array.isArray(res)?res:[]).forEach(r=>{ const p=parts.find(x=>x.id===r.id); if(p) grades[p.id]={score:Math.max(0,Math.min(p.pts,Number(r.score)||0)),feedback:String(r.feedback||"")}; });
+      parts.forEach(p=>{ if(!grades[p.id]) grades[p.id]={score:p.ans?0:0,feedback:p.ans?"Not graded; compare with the model answer.":"Left blank."}; });
+      s.grades=grades; persist(key); render(); window.scrollTo({top:0});
+    }catch(e){ st.textContent=errCopy(e); btn.disabled=false; }
+  });
+}
+function strip2(h){ const d=document.createElement("div"); d.innerHTML=h; return d.textContent.slice(0,60); }
+function scoreCard(key){
+  const ex=EXAMS[key], g=state[key].grades; let tot=0; const rows=ex.questions.map((q,i)=>{ const sc=q.parts.reduce((a,p)=>a+(g[p.id]?.score||0),0); tot+=sc; return "<div class='topicrow'><span>"+(i+1)+". "+q.title+"</span><span class='progress'>"+sc+" / "+q.pts+"</span></div>"; }).join("");
+  const c=el("section",{class:"q summary"}); c.innerHTML="<div class='qhead'><span class='qnum'>Your score</span><span class='chip'>graded by Claude</span></div><div class='score'>"+tot+" / 100</div>"+rows+"<p class='note'>Feedback and model answers are under each part below. Anything you lost points on is a candidate for your notes sheet.</p>";
+  return c;
+}
+
+function render(){
+  if(timerId){clearInterval(timerId);timerId=null;}
+  const main=document.getElementById("main"); main.innerHTML="";
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.view===view)));
+  if(view==="diag") renderDiag(main); else if(view==="sheet") renderSheet(main); else renderExam(main,view);
+}
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{ document.querySelectorAll("#main textarea").forEach(ta=>ta.dispatchEvent(new Event("change"))); view=t.dataset.view; try{localStorage.setItem(LS+"-view",view);}catch(e){} render(); window.scrollTo({top:0}); }));
+try{ const v=localStorage.getItem(LS+"-view"); if(v&&["diag","sheet","examA","examB"].includes(v)) view=v; }catch(e){}
+render();
+
+// ---------- Capabilities ----------
+(async()=>{
+  try{ sample = await window.claude?.use("sample"); }catch(e){ sample=null; }
+  try{
+    db = await window.claude?.use("db");
+    if(db){ let changed=false;
+      for(const k of Object.keys(state)){ try{ const snap=await db.doc("attempts/"+k).get(); if(snap.exists){ const d=snap.data(); const local=state[k]; const lt=local.updatedAt||""; if(!lt || (d.updatedAt||"")>lt){ state[k]=Object.assign({answers:{},results:{},grades:null,elapsed:0},JSON.parse(JSON.stringify(d))); changed=true; } } }catch(e){} }
+      if(changed && !document.activeElement?.matches("textarea")) render();
+    }
+  }catch(e){ db=null; }
+})();
+</script>
+
+</body></html>
